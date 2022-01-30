@@ -31,3 +31,10 @@ class ProductCategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     # gives get, put and destroy methods
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
+
+
+# products views
+class ProductList(generics.ListCreateAPIView):
+    
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
