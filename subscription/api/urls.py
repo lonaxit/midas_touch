@@ -11,6 +11,8 @@ urlpatterns = [
     # product category detail
      path('productcategory/<int:pk>/',ProductCategoryDetail.as_view(), name='productcategory-detail'),
      
+    path('products/',ProductList.as_view(), name='products'),
+     
     # path('<int:pk>/', WatchDetailAV.as_view(), name="movie-detail"),
     
     # to test filters on watch list
