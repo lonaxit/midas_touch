@@ -1,12 +1,25 @@
+from unicodedata import category
 from rest_framework import serializers
 # import models
 from subscription.models import *
 
 
-
+class ProductSerializer(serializers.ModelSerializer):
+    # product = serializers.StringRelatedField(read_only=True)
+    
+    # This is to enable the related field appear as a string rather than its id or pk
+    # category = serializers.CharField(source='category.name')
+    
+    class Meta:
+        model= Product
+    
+        fields= "__all__"
+        
+        
 class ProductCategorySerializer(serializers.ModelSerializer):
-    # control what is returned in our nested relationship 
-    # review_user = serializers.StringRelatedField(read_only=True)
+    
+    # nested relationships --- displays all products related to this product category
+    product = ProductSerializer(many=True,read_only=True) 
     
     class Meta:
         model= ProductCategory
@@ -24,12 +37,5 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     #     if len(value) == 1: 
     #         raise serializers.ValidationError("Enter a description")
     #     return value
-    
-class ProductSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model= Product
-    
-        fields= "__all__"
      
     
