@@ -25,7 +25,7 @@ class Loan(models.Model):
     # user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Product,on_delete=models.DO_NOTHING,related_name='loan')
     status = models.BooleanField(default=False)
-    reference = models.CharField(max_length=200)
+    # reference = models.CharField(max_length=200)
     applied_amount = models.DecimalField(max_digits=20,decimal_places=2)
     approved_amount = models.DecimalField(max_digits=20,decimal_places=2)
     monthly_deduction = models.DecimalField(max_digits=20,decimal_places=2)
