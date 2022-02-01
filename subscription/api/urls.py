@@ -16,6 +16,10 @@ urlpatterns = [
     path('product/<int:pk>/', ProductDetail.as_view(), name='product-detail'),
     
     path('<int:pk>/products/', ProductByCategoryList.as_view(), name="product-list"),
+    
+    
+    # loan endpoints
+    path('loans/',LoanList.as_view(),name='loans'),
      
     # path('<int:pk>/', WatchDetailAV.as_view(), name="movie-detail"),
     
