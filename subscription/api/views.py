@@ -73,3 +73,8 @@ class ProductByCategoryList(generics.ListAPIView):
         # get the product category pk
         pk = self.kwargs['pk']
         return Product.objects.filter(category=pk)
+
+
+class LoanList(generics.ListCreateAPIView):
+    queryset = Loan.objects.all()
+    serializer_class = LoanSerializer
