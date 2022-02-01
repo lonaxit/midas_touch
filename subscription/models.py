@@ -38,6 +38,7 @@ class Loan(models.Model):
     updated = models.DateTimeField(auto_now=True)
     
     def __str__(self):
+        
         return self.product.name + " loan"
     
     
