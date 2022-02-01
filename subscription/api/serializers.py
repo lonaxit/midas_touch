@@ -39,3 +39,8 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     #     return value
      
     
+class LoanSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model= Loan
+        fields = '__all__'
