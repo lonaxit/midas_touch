@@ -24,16 +24,17 @@ class Product(models.Model):
 class Loan(models.Model):
     # user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Product,on_delete=models.DO_NOTHING,related_name='loan')
-    status = models.BooleanField(default=False)
-    # reference = models.CharField(max_length=200)
+    active = models.BooleanField(default=True)
+    transaction_code = models.BigIntegerField()
     applied_amount = models.DecimalField(max_digits=20,decimal_places=2)
     approved_amount = models.DecimalField(max_digits=20,decimal_places=2)
     monthly_deduction = models.DecimalField(max_digits=20,decimal_places=2)
     net_pay = models.DecimalField(max_digits=20,decimal_places=2)
     tenor = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(36)])
-    
+    created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     # review_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
-    review_date = models.DateTimeField(auto_now_add=True)
+    
+    # review_date = models.DateTimeField(auto_now_add=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
@@ -41,7 +42,25 @@ class Loan(models.Model):
         
         return self.product.name + " loan"
     
+
+class ConsolidatedLoan(models.Model):
+    loan = models.ForeignKey(Loan,on_delete=models.CASCADE)
+    credit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    debit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    transaction_code = models.BigIntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     
+# class Deduction(models.Model):
+    
+#     loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
+#     credit= models.DecimalField(max_digits=20,decimal_places=2)
+#     debit = models.DecimalField(max_digits=20,decimal_places=2)
+#     balance = models.DecimalField(max_digits=20,decimal_places=2)
+#     description = models.CharField(max_length=200)
+#     deduction_month = models.DateField()
+#     created = models.DateTimeField(auto_now_add=True)
+#     updated = models.DateTimeField(auto_now=True)
  
 
     
