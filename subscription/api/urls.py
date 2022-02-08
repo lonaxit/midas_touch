@@ -20,6 +20,11 @@ urlpatterns = [
     
     # loan endpoints
     path('loans/',LoanList.as_view(),name='loans'),
+    path('loan-create/',LoanCreate.as_view(),name='loan-create'),
+    
+    path('<int:pk>/loans/', LoansByProduct.as_view(), name="product-loans"),
+    path('loan/<int:pk>/', LoanDetail.as_view(),name='loan-detail'),
+     path('loan/upload/', LoanUpload.as_view(),name='loan-upload'),
      
     # path('<int:pk>/', WatchDetailAV.as_view(), name="movie-detail"),
     
