@@ -4,11 +4,24 @@ from rest_framework import serializers
 from subscription.models import *
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class LoanSerializer(serializers.ModelSerializer):
     # product = serializers.StringRelatedField(read_only=True)
+    
+    # product = ProductSerializer(many=True,read_only=True) 
+    file = serializers.FileField()
+    
+    class Meta:
+        model= Loan
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
     
     # This is to enable the related field appear as a string rather than its id or pk
     # category = serializers.CharField(source='category.name')
+    
+    # loan = LoanSerializer(many=True,read_only=True)
+    
     
     class Meta:
         model= Product
@@ -39,8 +52,3 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     #     return value
      
     
-class LoanSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model= Loan
-        fields = '__all__'
