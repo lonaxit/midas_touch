@@ -26,12 +26,12 @@ class Loan(models.Model):
     product = models.ForeignKey(Product,on_delete=models.DO_NOTHING,related_name='loan')
     active = models.BooleanField(default=True)
     transaction_code = models.BigIntegerField()
-    applied_amount = models.DecimalField(max_digits=20,decimal_places=2)
-    approved_amount = models.DecimalField(max_digits=20,decimal_places=2)
-    monthly_deduction = models.DecimalField(max_digits=20,decimal_places=2)
+    applied_amount = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    approved_amount = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    monthly_deduction = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     net_pay = models.DecimalField(max_digits=20,decimal_places=2)
     tenor = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(36)])
-    created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    # created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     # review_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     
     # review_date = models.DateTimeField(auto_now_add=True)
@@ -44,23 +44,28 @@ class Loan(models.Model):
     
 
 class ConsolidatedLoan(models.Model):
-    loan = models.ForeignKey(Loan,on_delete=models.CASCADE)
+    # user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    loan = models.ForeignKey(Loan,on_delete=models.CASCADE,related_name='consolidatedloan')
     credit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     debit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    balance = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    transaction_date = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    narration = models.CharField(max_length=400)
     transaction_code = models.BigIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-# class Deduction(models.Model):
+class Deduction(models.Model):
     
-#     loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
-#     credit= models.DecimalField(max_digits=20,decimal_places=2)
-#     debit = models.DecimalField(max_digits=20,decimal_places=2)
-#     balance = models.DecimalField(max_digits=20,decimal_places=2)
-#     description = models.CharField(max_length=200)
-#     deduction_month = models.DateField()
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE,related_name='deduction')
+    credit= models.DecimalField(max_digits=20,decimal_places=2)
+    debit = models.DecimalField(max_digits=20,decimal_places=2)
+    balance = models.DecimalField(max_digits=20,decimal_places=2)
+    description = models.CharField(max_length=200)
+    transaction_code = models.BigIntegerField()
+    transaction_date = models.DateField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
  
 
     
