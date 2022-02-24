@@ -45,25 +45,27 @@ class Loan(models.Model):
 
 class ConsolidatedLoan(models.Model):
     # user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
-    loan = models.ForeignKey(Loan,on_delete=models.CASCADE,related_name='consolidatedloan')
     credit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     debit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     balance = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     transaction_date = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     narration = models.CharField(max_length=400)
-    transaction_code = models.BigIntegerField()
+    transaction_code = models.BigIntegerField(null=True,blank=True)
+    active = models.BooleanField(default=True)
+    # created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-class Deduction(models.Model):
+class LoanDeduction(models.Model):
     
-    loan = models.ForeignKey(Loan, on_delete=models.CASCADE,related_name='deduction')
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE,related_name='deductions')
     credit= models.DecimalField(max_digits=20,decimal_places=2)
     debit = models.DecimalField(max_digits=20,decimal_places=2)
     balance = models.DecimalField(max_digits=20,decimal_places=2)
     description = models.CharField(max_length=200)
     transaction_code = models.BigIntegerField()
     transaction_date = models.DateField()
+    # created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
  
