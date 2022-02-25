@@ -180,6 +180,8 @@ class LoanUpload(generics.CreateAPIView):
             # 2. CREATE CORRESPONDING LOAN IN THE CONSOLIDATED LOANS TABLE AS DEBIT
             
             print(dtframe.monthly_deduction.sum())
+
+            # TODO Save total sum of deductions in a summary table
             
             # generate random number 
             random_number = ''.join((random.choice(string.digits) for x in range(10)))
@@ -189,7 +191,7 @@ class LoanUpload(generics.CreateAPIView):
                 
                 loanObj = Loan.objects.create(
                                     product=Product.objects.get(pk=dtframe.product),
-                                    reference = random_number,
+                                    transaction_code = random_number,
                                     applied_amount=dtframe.applied_amount,
                                     approved_amount=dtframe.approved_amount,
                                     monthly_deduction=dtframe.monthly_deduction,
