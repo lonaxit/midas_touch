@@ -4,17 +4,6 @@ from rest_framework import serializers
 from subscription.models import *
 
 
-class LoanSerializer(serializers.ModelSerializer):
-    # product = serializers.StringRelatedField(read_only=True)
-    
-    # product = ProductSerializer(many=True,read_only=True) 
-    file = serializers.FileField()
-    
-    class Meta:
-        model= Loan
-        fields = '__all__'
-
-
 class ProductSerializer(serializers.ModelSerializer):
     
     # This is to enable the related field appear as a string rather than its id or pk
@@ -51,4 +40,34 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError("Enter a description")
     #     return value
      
+
+class LoanDeductionSerializer(serializers.ModelSerializer):
     
+    class Meta:
+        model= LoanDeduction
+    
+        fields= "__all__"
+
+class LoanSerializer(serializers.ModelSerializer):
+    
+
+    # describing relationships
+    deductions = LoanDeductionSerializer(many=True,read_only=True)
+    product = ProductSerializer(many=True,read_only=True) 
+    # product = ProductSerializer(many=True,required=True)
+    
+
+    file = serializers.FileField()
+    
+    class Meta:
+        model= Loan
+        fields = '__all__'
+
+        
+
+class ConsolidatedLoanSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model=  ConsolidatedLoan
+    
+        fields= "__all__"
