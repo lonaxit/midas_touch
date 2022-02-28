@@ -71,3 +71,12 @@ class ConsolidatedLoanSerializer(serializers.ModelSerializer):
         model=  ConsolidatedLoan
     
         fields= "__all__"
+        
+
+
+class LoanDeductionSummary(serializers.ModelSerializer):
+    
+    class Meta:
+        model = LoanDeductionSummary
+        
+        fields= "__all__"
