@@ -202,5 +202,53 @@ class LoanUpload(generics.CreateAPIView):
                             
         #     loanObj.save()
         return Response(status=201)
+
+#create loan deductions
+class LoanDeductionCreate(generics.CreateAPIView):
+    
+    serializer_class = LoanDeductionSerializer
+    # permission_classes = [IsAuthenticated]
+    # throttle_classes=[ReviewCreateThrottle]
+    
+    def get_queryset(self):
         
+        return LoanDeduction.objects.all()
+     
+    #  we need to overwrite the current function becos we need to pass the current movie ID for which review is being created
+    
+    def perform_create(self,serializer):
+        
+        # pk = self.kwargs.get('pk')
+        # get movie
+        # movie= WatchList.objects.get(pk=pk)
+        
+        # logic to prevent multiple creation of reviews by a user
+        # review_user = self.request.user
+        # review_queryset = Review.objects.filter(watchlist=movie,review_user=review_user)
+        # if review_queryset.exists():
+            
+        #     raise ValidationError("You have already reviewed this watchlist")
+        
+        # # custom calculations
+        # # check if rating is 0 
+        # if movie.number_rating == 0:
+        #     movie.avg_rating = serializer.validated_data['rating']
+        # else:
+        #     movie.avg_rating = (movie.avg_rating + serializer.validated_data['rating'])/2
+        
+        # # increase the rating  
+        # movie.number_rating = movie.number_rating + 1
+        
+        # # save
+        # movie.save()
+        
+        # product = Product.objects.get(pk=serializer.validated_data['product'])
+        # save together with related watchlist and user
+        # serializer.save(product=product,review_user=review_user)
+        serializer.save()
+    
+
+
+
+
       
