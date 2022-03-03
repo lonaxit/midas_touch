@@ -42,14 +42,19 @@ class ProductCategorySerializer(serializers.ModelSerializer):
      
 
 class LoanDeductionSerializer(serializers.ModelSerializer):
+
+    # serializer relations
+    loandeduction_user = serializers.StringRelatedField(read_only=True)
     
     class Meta:
         model= LoanDeduction
     
         fields= "__all__"
 
+
+
 class LoanSerializer(serializers.ModelSerializer):
-    
+    loan_user = serializers.StringRelatedField(read_only=True)
 
     # describing relationships
     deductions = LoanDeductionSerializer(many=True,read_only=True)
@@ -66,6 +71,8 @@ class LoanSerializer(serializers.ModelSerializer):
         
 
 class ConsolidatedLoanSerializer(serializers.ModelSerializer):
+
+    consolidatedloan_user = serializers.StringRelatedField(read_only=True)
     
     class Meta:
         model=  ConsolidatedLoan
