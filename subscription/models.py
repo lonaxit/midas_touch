@@ -22,7 +22,7 @@ class Product(models.Model):
         return self.name
 
 class Loan(models.Model):
-    # loan_user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    loan_user = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='loanuser')
     product = models.ForeignKey(Product,on_delete=models.DO_NOTHING,related_name='loan')
     active = models.BooleanField(default=True)
     transaction_code = models.BigIntegerField()
@@ -31,7 +31,7 @@ class Loan(models.Model):
     monthly_deduction = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     net_pay = models.DecimalField(max_digits=20,decimal_places=2)
     tenor = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(36)])
-    # created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
@@ -41,7 +41,7 @@ class Loan(models.Model):
     
 
 class ConsolidatedLoan(models.Model):
-    # consolidatedloan_user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    consolidatedloan_user = models.ForeignKey(User,on_delete=models.DO_NOTHING,related_name='consolidatedloanuser')
     credit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     debit = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     balance = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
@@ -49,7 +49,7 @@ class ConsolidatedLoan(models.Model):
     narration = models.CharField(max_length=400)
     transaction_code = models.BigIntegerField(null=True,blank=True)
     active = models.BooleanField(default=True)
-    # created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    created_by = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     

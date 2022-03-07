@@ -203,6 +203,7 @@ class LoanUpload(generics.CreateAPIView):
         #     loanObj.save()
         return Response(status=201)
 
+
 #create loan deductions
 class LoanDeductionCreate(generics.CreateAPIView):
     
