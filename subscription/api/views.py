@@ -187,16 +187,18 @@ class LoanUpload(generics.CreateAPIView):
             random_number = ''.join((random.choice(string.digits) for x in range(10)))
           
             for dtframe in dtframe.itertuples():
-                
+                loanuser = self.request.user
                 
                 loanObj = Loan.objects.create(
+                                    loan_user = loanuser,
                                     product=Product.objects.get(pk=dtframe.product),
                                     transaction_code = random_number,
                                     applied_amount=dtframe.applied_amount,
                                     approved_amount=dtframe.approved_amount,
                                     monthly_deduction=dtframe.monthly_deduction,
                                     net_pay=dtframe.net_pay,
-                                    tenor=dtframe.tenor
+                                    tenor=dtframe.tenor,
+                                    created_by = loanuser
                                     )
                                 
                             
