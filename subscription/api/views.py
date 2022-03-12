@@ -87,22 +87,24 @@ class ProductByCategoryList(generics.ListAPIView):
         pk = self.kwargs['pk']
         return Product.objects.filter(category=pk)
 
-# list all loans available
-class LoanList(generics.ListAPIView):
-    queryset = Loan.objects.all()
-    serializer_class = LoanSerializer
+
+# # list all loans available
+# class LoanList(generics.ListCreateAPIView):
+#     queryset = Loan.objects.all()
+#     serializer_class = LoanSerializer
+
     
-# list all loans given a product id 
-class LoansByProduct(generics.ListAPIView):
+# # list all loans given a product id 
+# class LoansByProduct(generics.ListAPIView):
   
-    serializer_class = LoanSerializer
+#     serializer_class = LoanSerializer
   
     
-    # over writing default queryset 
-    def get_queryset(self):
-        # get the wachlist pk
-        pk = self.kwargs['pk']
-        return Loan.objects.filter(product=pk)
+#     # over writing default queryset 
+#     def get_queryset(self):
+#         # get the wachlist pk
+#         pk = self.kwargs['pk']
+#         return Loan.objects.filter(product=pk)
     
 
 class LoanCreate(generics.CreateAPIView):
@@ -147,108 +149,107 @@ class LoanCreate(generics.CreateAPIView):
         # save together with related watchlist and user
         # serializer.save(product=product,review_user=review_user)
         serializer.save()
+
         
-class LoanDetail(generics.RetrieveUpdateDestroyAPIView):
-      # allow get, put and destroy methods
-    queryset = Loan.objects.all()
-    serializer_class = LoanSerializer
-    # permission_classes = [IsReviewUserOrReadOnly]
+# class LoanDetail(generics.RetrieveUpdateDestroyAPIView):
+#       # allow get, put and destroy methods
+#     queryset = Loan.objects.all()
+#     serializer_class = LoanSerializer
+#     # permission_classes = [IsReviewUserOrReadOnly]
     
-    # throttle_classes =[UserRateThrottle,AnonRateThrottle]
+#     # throttle_classes =[UserRateThrottle,AnonRateThrottle]
     
-    # using ScopedRateThrottle
-    # throttle_classes =[ScopedRateThrottle]
-    # throttle_scope = 'review-detail'
+#     # using ScopedRateThrottle
+#     # throttle_classes =[ScopedRateThrottle]
+#     # throttle_scope = 'review-detail'
 
 
-class LoanUpload(generics.CreateAPIView):
-    serializer_class = LoanSerializer
-    parser_classes = (MultiPartParser, FormParser,)
+# class LoanUpload(generics.CreateAPIView):
+#     serializer_class = LoanSerializer
+#     parser_classes = (MultiPartParser, FormParser,)
     
-    def get_queryset(self):
-        # just return the review object
-        return Loan.objects.all()
+#     def get_queryset(self):
+#         # just return the review object
+#         return Loan.objects.all()
     
-    def post(self, request, *args, **kwargs):
-        data = request.FILES['file']
-        reader = pd.read_excel(data)
-        dtframe = reader
+#     def post(self, request, *args, **kwargs):
+#         data = request.FILES['file']
+#         reader = pd.read_excel(data)
+#         dtframe = reader
         
-        with transaction.atomic():
-            # TODO
-            # 1 CREATE EACH LOAN IN THE LOAN MODEL
-            # 2. CREATE CORRESPONDING LOAN IN THE CONSOLIDATED LOANS TABLE AS DEBIT
+#         with transaction.atomic():
+#             # TODO
+#             # 1 CREATE EACH LOAN IN THE LOAN MODEL
+#             # 2. CREATE CORRESPONDING LOAN IN THE CONSOLIDATED LOANS TABLE AS DEBIT
             
-            print(dtframe.monthly_deduction.sum())
+#             print(dtframe.monthly_deduction.sum())
 
-            # TODO Save total sum of deductions in a summary table
+#             # TODO Save total sum of deductions in a summary table
             
-            # generate random number 
-            random_number = ''.join((random.choice(string.digits) for x in range(10)))
+#             # generate random number 
+#             random_number = ''.join((random.choice(string.digits) for x in range(10)))
           
-            for dtframe in dtframe.itertuples():
-                loanuser = self.request.user
+#             for dtframe in dtframe.itertuples():
                 
-                loanObj = Loan.objects.create(
-                                    loan_user = loanuser,
-                                    product=Product.objects.get(pk=dtframe.product),
-                                    transaction_code = random_number,
-                                    applied_amount=dtframe.applied_amount,
-                                    approved_amount=dtframe.approved_amount,
-                                    monthly_deduction=dtframe.monthly_deduction,
-                                    net_pay=dtframe.net_pay,
-                                    tenor=dtframe.tenor,
-                                    created_by = loanuser
-                                    )
+                
+#                 loanObj = Loan.objects.create(
+#                                     product=Product.objects.get(pk=dtframe.product),
+#                                     transaction_code = random_number,
+#                                     applied_amount=dtframe.applied_amount,
+#                                     approved_amount=dtframe.approved_amount,
+#                                     monthly_deduction=dtframe.monthly_deduction,
+#                                     net_pay=dtframe.net_pay,
+#                                     tenor=dtframe.tenor
+#                                     )
                                 
                             
-        #     loanObj.save()
-        return Response(status=201)
+#         #     loanObj.save()
+#         return Response(status=201)
 
 
-#create loan deductions
-class LoanDeductionCreate(generics.CreateAPIView):
+# #create loan deductions
+# class LoanDeductionCreate(generics.CreateAPIView):
     
-    serializer_class = LoanDeductionSerializer
-    # permission_classes = [IsAuthenticated]
-    # throttle_classes=[ReviewCreateThrottle]
+#     serializer_class = LoanDeductionSerializer
+#     # permission_classes = [IsAuthenticated]
+#     # throttle_classes=[ReviewCreateThrottle]
     
-    def get_queryset(self):
+#     def get_queryset(self):
         
-        return LoanDeduction.objects.all()
+#         return LoanDeduction.objects.all()
      
-    #  we need to overwrite the current function becos we need to pass the current movie ID for which review is being created
+#     #  we need to overwrite the current function becos we need to pass the current movie ID for which review is being created
     
-    def perform_create(self,serializer):
+#     def perform_create(self,serializer):
         
-        # pk = self.kwargs.get('pk')
-        # get movie
-        # movie= WatchList.objects.get(pk=pk)
+#         # pk = self.kwargs.get('pk')
+#         # get movie
+#         # movie= WatchList.objects.get(pk=pk)
         
-        # logic to prevent multiple creation of reviews by a user
-        # review_user = self.request.user
-        # review_queryset = Review.objects.filter(watchlist=movie,review_user=review_user)
-        # if review_queryset.exists():
+#         # logic to prevent multiple creation of reviews by a user
+#         # review_user = self.request.user
+#         # review_queryset = Review.objects.filter(watchlist=movie,review_user=review_user)
+#         # if review_queryset.exists():
             
-        #     raise ValidationError("You have already reviewed this watchlist")
+#         #     raise ValidationError("You have already reviewed this watchlist")
         
-        # # custom calculations
-        # # check if rating is 0 
-        # if movie.number_rating == 0:
-        #     movie.avg_rating = serializer.validated_data['rating']
-        # else:
-        #     movie.avg_rating = (movie.avg_rating + serializer.validated_data['rating'])/2
+#         # # custom calculations
+#         # # check if rating is 0 
+#         # if movie.number_rating == 0:
+#         #     movie.avg_rating = serializer.validated_data['rating']
+#         # else:
+#         #     movie.avg_rating = (movie.avg_rating + serializer.validated_data['rating'])/2
         
-        # # increase the rating  
-        # movie.number_rating = movie.number_rating + 1
+#         # # increase the rating  
+#         # movie.number_rating = movie.number_rating + 1
         
-        # # save
-        # movie.save()
+#         # # save
+#         # movie.save()
         
-        # product = Product.objects.get(pk=serializer.validated_data['product'])
-        # save together with related watchlist and user
-        # serializer.save(product=product,review_user=review_user)
-        serializer.save()
+#         # product = Product.objects.get(pk=serializer.validated_data['product'])
+#         # save together with related watchlist and user
+#         # serializer.save(product=product,review_user=review_user)
+#         serializer.save()
     
 
 

@@ -41,15 +41,15 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     #     return value
      
 
-class LoanDeductionSerializer(serializers.ModelSerializer):
+# class LoanDeductionSerializer(serializers.ModelSerializer):
 
-    # serializer relations
-    loandeduction_user = serializers.StringRelatedField(read_only=True)
+#     # serializer relations
+#     loandeduction_user = serializers.StringRelatedField(read_only=True)
     
-    class Meta:
-        model= LoanDeduction
+#     class Meta:
+#         model= LoanDeduction
     
-        fields= "__all__"
+#         fields= "__all__"
 
 
 
@@ -57,12 +57,13 @@ class LoanSerializer(serializers.ModelSerializer):
     loan_user = serializers.StringRelatedField(read_only=True)
 
     # describing relationships
-    deductions = LoanDeductionSerializer(many=True,read_only=True)
+    
+    # deductions = LoanDeductionSerializer(many=True,read_only=True)
     product = ProductSerializer(many=True,read_only=True) 
     # product = ProductSerializer(many=True,required=True)
     
 
-    file = serializers.FileField()
+    # file = serializers.FileField()
     
     class Meta:
         model= Loan
@@ -70,20 +71,20 @@ class LoanSerializer(serializers.ModelSerializer):
 
         
 
-class ConsolidatedLoanSerializer(serializers.ModelSerializer):
+# class ConsolidatedLoanSerializer(serializers.ModelSerializer):
 
-    consolidatedloan_user = serializers.StringRelatedField(read_only=True)
+#     consolidatedloan_user = serializers.StringRelatedField(read_only=True)
     
-    class Meta:
-        model=  ConsolidatedLoan
+#     class Meta:
+#         model=  ConsolidatedLoan
     
-        fields= "__all__"
+#         fields= "__all__"
         
 
 
-class LoanDeductionSummary(serializers.ModelSerializer):
+# class LoanDeductionSummary(serializers.ModelSerializer):
     
-    class Meta:
-        model = LoanDeductionSummary
+#     class Meta:
+#         model = LoanDeductionSummary
         
-        fields= "__all__"
+#         fields= "__all__"
